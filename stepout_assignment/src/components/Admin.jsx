@@ -29,6 +29,10 @@ const Admin = () => {
       if (data.status === 200) {
         localStorage.setItem("stepout_token", data?.data.token);
         toast({ description: "LoggedIn as Admin!", status: "success" });
+        toast({
+          description: "NOTE: ADMIN CANNOT BOOK ANY TRAIN",
+          status: "success",
+        });
         navigate("/train/add-train");
       }
     } catch (e) {
@@ -80,6 +84,7 @@ const Admin = () => {
         pb={"3rem"}
         borderRadius={"0.3rem"}
         boxShadow={"0 0 3px #ddd"}
+        gap={"1rem"}
       >
         <Box w={"80%"}>
           <FormLabel
