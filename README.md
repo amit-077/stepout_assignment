@@ -1,7 +1,7 @@
 Technologies Used: 
 ReactJS NodeJS ExpressJS MongoDB
 
-To run frontend
+# To run frontend
 -> cd stepout_assignment
 -> npm run dev
 
