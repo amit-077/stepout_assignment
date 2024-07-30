@@ -1,0 +1,4 @@
+1) Verify mail using nodemailer
+2) isAdmin field in user schema
+3) Use of cache (Redis or node-cache)
+4) Use of load-balancers (Nginx, AWS)

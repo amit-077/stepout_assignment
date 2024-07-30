@@ -29,10 +29,6 @@ const Admin = () => {
       if (data.status === 200) {
         localStorage.setItem("stepout_token", data?.data.token);
         toast({ description: "LoggedIn as Admin!", status: "success" });
-        toast({
-          description: "NOTE: ADMIN CANNOT BOOK ANY TRAIN",
-          status: "success",
-        });
         navigate("/train/add-train");
       }
     } catch (e) {

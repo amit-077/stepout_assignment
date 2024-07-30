@@ -16,7 +16,7 @@ const AddTrain = () => {
   const [pageLoading, setPageLoading] = useState(false);
 
   const navigate = useNavigate();
-
+  const [trainId, setTrainId] = useState("");
   const checkAdminLogin = async () => {
     setPageLoading(true);
     try {
@@ -52,15 +52,29 @@ const AddTrain = () => {
     capacity: "",
     arrivalTime: "",
     destinationTime: "",
+    trainId: "",
   });
 
   const toast = useToast();
 
   const addTrain = async () => {
     try {
-      let data = await axios.post(`${url}/api/trains/create`, train);
+      let data = await axios.post(`${url}/api/trains/create`, {
+        train,
+        trainId,
+      });
       if (data.status === 200) {
         toast({ description: "Train added successfully!", status: "success" });
+      } else if (data.status === 203) {
+        toast({
+          description: "Train Updated successfully!",
+          status: "success",
+        });
+      } else {
+        toast({
+          description: "An error occured!",
+          status: "error",
+        });
       }
     } catch (e) {
       console.log(e);
@@ -68,6 +82,32 @@ const AddTrain = () => {
         description: "An error occured, please try again later",
         status: "error",
       });
+    }
+  };
+
+  const fetchTrain = async () => {
+    try {
+      let { data } = await axios.get(`${url}/api/trains/${trainId}`);
+      console.log(data);
+      let {
+        name,
+        source,
+        destination,
+        capacity,
+        destinationTime,
+        arrivalTime,
+      } = data;
+
+      setTrain({
+        name: name,
+        source: source,
+        destination,
+        capacity,
+        destinationTime,
+        arrivalTime,
+      });
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -128,6 +168,18 @@ const AddTrain = () => {
         >
           <Box w={"70%"}>
             <Input
+              placeholder="Enter Train ID to update train"
+              name="trainId"
+              onChange={(e) => {
+                setTrainId(e.target.value);
+                setTrain((prevVal) => {
+                  return { ...prevVal, [e.target.name]: e.target.value };
+                });
+              }}
+            />
+          </Box>
+          <Box w={"70%"}>
+            <Input
               placeholder="Enter Train Name"
               name="name"
               onChange={(e) => {
@@ -135,6 +187,7 @@ const AddTrain = () => {
                   return { ...prevVal, [e.target.name]: e.target.value };
                 });
               }}
+              value={train.name}
             />
           </Box>
           <Box
@@ -153,6 +206,7 @@ const AddTrain = () => {
                     return { ...prevVal, [e.target.name]: e.target.value };
                   });
                 }}
+                value={train.source}
               />
             </Box>
             <Box>
@@ -169,6 +223,7 @@ const AddTrain = () => {
                     return { ...prevVal, [e.target.name]: e.target.value };
                   });
                 }}
+                value={train.destination}
               />
             </Box>
           </Box>
@@ -195,6 +250,7 @@ const AddTrain = () => {
                   return { ...prevVal, [e.target.name]: e.target.value };
                 });
               }}
+              value={train.capacity}
             />
           </Box>
           {/* Arrival Time */}
@@ -220,6 +276,7 @@ const AddTrain = () => {
                   return { ...prevVal, [e.target.name]: e.target.value };
                 });
               }}
+              value={train.arrivalTime}
             />
           </Box>
           {/* Departure Time */}
@@ -245,11 +302,25 @@ const AddTrain = () => {
                   return { ...prevVal, [e.target.name]: e.target.value };
                 });
               }}
+              value={train.destinationTime}
             />
           </Box>
-          <Box w={"70%"} mt={"1rem"}>
+          <Box
+            w={"70%"}
+            mt={"1rem"}
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            gap={"1rem"}
+          >
             <Button colorScheme="blue" w={"100%"} onClick={addTrain}>
               Add Train
+            </Button>
+            <Button colorScheme="blue" w={"100%"} onClick={fetchTrain}>
+              Fetch Train
+            </Button>
+            <Button colorScheme="orange" w={"100%"} onClick={addTrain}>
+              Update a Train
             </Button>
           </Box>
         </Box>

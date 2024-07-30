@@ -28,7 +28,11 @@ const bookTrain = async (req, res) => {
     }
 
     let seatsBooked = [];
-    for (let i = trainCapacity; i > trainCapacity - seats; i--) {
+    for (
+      let i = currentTrain.capacity;
+      i > currentTrain.capacity - seats;
+      i--
+    ) {
       seatsBooked.push(i);
     }
 

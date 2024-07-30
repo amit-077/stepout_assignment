@@ -14,6 +14,7 @@ const { Train } = require("./db/models/Train");
 const { Booking } = require("./db/models/Booking");
 const { getUserBookings } = require("./controllers/getUserBookings");
 const { getSpecificTrain } = require("./controllers/getSpecificTrain");
+const { getTrain } = require("./controllers/getTrain");
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -29,7 +30,8 @@ app.post("/api/trains/create", addTrain);
 app.post("/api/trains/:trainId/book", authUser, bookTrain);
 app.get("/api/check/admin", checkAdmin);
 app.get("/api/trains/get-bookings", authUser, getUserBookings);
-app.get("/api/bookings/:bookingId", authUser, getSpecificTrain)
+app.get("/api/bookings/:bookingId", authUser, getSpecificTrain);
+app.get("/api/trains/:trainId", getTrain);
 // Testing
 app.get("/getAllTrains", async (req, res) => {
   let data = await Train.find();
